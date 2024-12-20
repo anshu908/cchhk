@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 30px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Search</h1>
+    <p>Type a search term to find images:</p>
+    <input type="text" id="searchQuery" placeholder="Enter a search term">
+    <button onclick="searchImage()">Search</button>
+
+    <div id="result"></div>
+
+    <script>
+        function searchImage() {
+            const query = document.getElementById('searchQuery').value;
+            if (!query.trim()) {
+                alert("Please enter a search term.");
+                return;
+            }
+
+            const imageUrl = `https://image.rishu-api.workers.dev/?search=${encodeURIComponent(query)}`;
+            document.getElementById('result').innerHTML = `<img src="${imageUrl}" alt="Search result for ${query}">`;
+        }
+    </script>
+</body>
+</html>
