@@ -37,7 +37,7 @@
     <div id="result"></div>
 
     <script>
-        function searchImage() {
+        async function searchImage() {
             const query = document.getElementById('searchQuery').value.trim();
             const resultDiv = document.getElementById('result');
             
@@ -50,17 +50,24 @@
             }
 
             const imageUrl = `https://image.rishu-api.workers.dev/?search=${encodeURIComponent(query)}`;
+            console.log("Fetching URL:", imageUrl);
 
-            // Create an image element
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            img.alt = `Search result for ${query}`;
-            img.onload = () => {
+            try {
+                // Check if the URL is accessible
+                const response = await fetch(imageUrl);
+                if (!response.ok) {
+                    throw new Error("Image not found.");
+                }
+
+                // Create and display the image
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `Search result for ${query}`;
                 resultDiv.appendChild(img);
-            };
-            img.onerror = () => {
+            } catch (error) {
+                console.error("Error fetching image:", error);
                 resultDiv.innerHTML = `<p style="color: red;">No image found for "${query}". Please try a different term.</p>`;
-            };
+            }
         }
     </script>
 </body>
