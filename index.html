@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Images</title>
+    <title>Image Search</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,10 +20,7 @@
             font-size: 16px;
             cursor: pointer;
         }
-        #result {
-            margin-top: 30px;
-        }
-        img {
+        #result img {
             max-width: 100%;
             height: auto;
             border: 1px solid #ccc;
@@ -41,14 +38,29 @@
 
     <script>
         function searchImage() {
-            const query = document.getElementById('searchQuery').value;
-            if (!query.trim()) {
+            const query = document.getElementById('searchQuery').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            // Clear previous results
+            resultDiv.innerHTML = "";
+
+            if (!query) {
                 alert("Please enter a search term.");
                 return;
             }
 
             const imageUrl = `https://image.rishu-api.workers.dev/?search=${encodeURIComponent(query)}`;
-            document.getElementById('result').innerHTML = `<img src="${imageUrl}" alt="Search result for ${query}">`;
+
+            // Create an image element
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = `Search result for ${query}`;
+            img.onload = () => {
+                resultDiv.appendChild(img);
+            };
+            img.onerror = () => {
+                resultDiv.innerHTML = `<p style="color: red;">No image found for "${query}". Please try a different term.</p>`;
+            };
         }
     </script>
 </body>
